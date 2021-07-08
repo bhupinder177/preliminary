@@ -40,6 +40,18 @@
                                         <input type="text" placeholder="Please enter address" class="form-control" name="address"   id="address">
                                     </div>
                                 </div>
+                                <?php if(!empty($articles))
+                                {
+                                  foreach($articles as $a)
+                                  {
+                                  ?>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                      <label><?php echo $a->variationName; ?><span class="error">*</span></label>
+                                        <input type="checkbox"  value="1" name="checked[<?php echo $a->variationId; ?>]"   id="checked">
+                                    </div>
+                                </div>
+                              <?php } } ?>
 
 
 

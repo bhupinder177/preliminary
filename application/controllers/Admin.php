@@ -348,7 +348,7 @@ class Admin extends CI_Controller {
    public function customer_add()
    {
      $this->securite();
-     $data['artcile'] = $this->common->get('variation',array("variationStatus"=>1));
+     $data['articles'] = $this->common->get('variation',array("variationStatus"=>1));
 
      $this->load->view('admin/header');
      $this->load->view('admin/addcustomer',$data);
@@ -357,8 +357,24 @@ class Admin extends CI_Controller {
 
    public function customerSave()
    {
+       $article = $_POST['checked'];
+       unset($_POST['checked']);
 
        $insert = $this->common->insert('users',$_POST);
+
+       if($insert)
+       {
+         if(!empty($article))
+         {
+           foreach($article as $key=>$a)
+           {
+             $b['userId'] = $insert[1];
+             $b['variationId'] = $key;
+
+             $this->common->insert('user_articles',$b);
+           }
+         }
+       }
        if($insert)
        {
          $output['success'] ="true";
@@ -399,7 +415,7 @@ class Admin extends CI_Controller {
    public function customer_edit($id)
    {
      $this->securite();
-     $data['artcile'] = $this->common->get('variation',array("variationStatus"=>1));
+     $data['articles'] = $this->common->get('variation',array("variationStatus"=>1));
      $data['result'] = $this->common->getrow('users',array("userId"=>$id));
      $this->load->view('admin/header');
      $this->load->view('admin/editcustomer',$data);
