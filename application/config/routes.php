@@ -90,6 +90,20 @@ $route["admin/getcustomerperpage"]  ="admin/getcustomerperpage";
 $route["admin/getcustomerperpage/(:any)"]  ="admin/getcustomerperpage/$1";
 // customer
 
+// customer
+$route["admin/stafflist"]  = "admin/staff";
+$route["admin/stafflist/(:any)"]  = "admin/staff/$1";
+$route["admin/staff/add"]  = "admin/staff_add/";
+$route["admin/staffSave"]  = "admin/staffSave";
+$route["admin/staff/edit/(:any)"]  ="admin/staff_edit/$1";
+$route["admin/staffUpdate/(:any)"]  ="admin/staffUpdate/$1";
+$route["admin/staffDelete"]  ="admin/staffDelete";
+$route["admin/staffStatus"]  ="admin/staffStatus";
+$route["admin/getstaffperpage"]  ="admin/getstaffperpage";
+$route["admin/getstaffperpage/(:any)"]  ="admin/getstaffperpage/$1";
+// customer
+
+
 // forgot password
 $route['admin/forgot-password'] = "admin/forgotPassword";
 $route['admin/forgotcheckemail'] = "admin/forgotcheckemail";

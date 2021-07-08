@@ -476,6 +476,162 @@ class Admin extends CI_Controller {
 
    // customer section
 
+   ////Staff
+     public function staff()
+     {
+       $this->securite();
+       $data['pcount'] = $this->common->count_all_results("users",array("type"=>2));
+       $config = array();
+       $config["base_url"] = base_url() . 'admin/stafflist/';
+       $config["total_rows"] = $this->common->count_all_results("users",array("type"=>2));
+       $config["per_page"] = 10;
+       $config["uri_segment"] = 3;
+       $this->pagination->initialize($config);
+       $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
+       if( $page <= 0 )
+       {
+         $page = 1;
+       }
+       $start = ($page-1) * $config["per_page"];
+       $data['start'] = $start;
+       $data['result'] = $this->common->allstaff($start,$config["per_page"]);
+       $data["links"] = getPaginationlink($config["per_page"],$config["total_rows"],$config["base_url"],$config["uri_segment"],1);
+
+
+       $this->load->view('admin/header');
+       $this->load->view('admin/staff',$data);
+       $this->load->view('admin/footer');
+
+     }
+
+     public function staff_add()
+     {
+       $this->securite();
+       $this->load->view('admin/header');
+       $this->load->view('admin/addstaff');
+       $this->load->view('admin/footer');
+     }
+
+     public function staffSave()
+     {
+
+         $insert = $this->common->insert('users',$_POST);
+         if($insert)
+         {
+           $output['success'] ="true";
+           $output['success_message'] ="Staff  Added Successfully";
+           $output['url'] = base_url().'admin/stafflist';
+           $output['delayTime'] ='3000';
+           $output['resetform'] ='true';
+         }
+         else
+         {
+           $output['formErrors'] ="true";
+           $output['errors'] ="Staff  is Not Added";
+         }
+
+         echo json_encode($output);
+         exit;
+     }
+
+     public function staffDelete()
+     {
+       $query = $this->common->delete('users',array("userId"=>$_POST['id']));
+       if($query)
+       {
+         $msg['success']="true";
+         $msg['success_message'] ="Staff Deleted Successfully";
+       }
+       else
+       {
+         $msg['errors'] ="false";
+         $msg['errors'] ="Staff  is Not Delete";
+       }
+       echo json_encode($msg);
+       exit;
+     }
+
+
+
+     public function staff_edit($id)
+     {
+       $this->securite();
+       $data['result'] = $this->common->getrow('users',array("userId"=>$id));
+       $this->load->view('admin/header');
+       $this->load->view('admin/editstaff',$data);
+       $this->load->view('admin/footer');
+     }
+
+     public function staffUpdate($id)
+     {
+
+       $update = $this->common->update(array("userId"=>$id),$_POST,'users');
+
+       if($update)
+       {
+         $output['success'] ="true";
+         $output['success_message'] ="Staff Updated Successfully";
+         $output['url'] = base_url().'admin/stafflist';
+         $output['delayTime'] ='3000';
+       }
+       else
+       {
+         $output['formErrors'] ="true";
+         $output['errors'] ="Staff Is Not Updated";
+       }
+       echo json_encode($output);
+       exit;
+     }
+
+
+     public function getstaffperpage()
+     {
+       if(!empty($_POST['perpage']))
+     {
+       $perpage =$_POST['perpage'];
+     }
+     else
+     {
+       $perpage =10;
+     }
+     if(!empty($_POST['date']))
+     {
+      $_POST['date'] = date("Y-m-d", strtotime($_POST['date']));
+     }
+
+     $config = array();
+
+     $data['pcount'] = $this->common->count_all_results("users",array("type"=>2));
+     $config["total_rows"] = $this->common->count_all_results("users",array("type"=>2));
+
+
+     $config["base_url"] = base_url() . 'admin/getstaffperpage/';
+     $config["per_page"] = $perpage;
+     $config["uri_segment"] = 3;
+     $this->pagination->initialize($config);
+     $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
+     if( $page <= 0 )
+     {
+       $page = 1;
+     }
+     $start = ($page-1) * $config["per_page"];
+     $data['start'] = $start;
+
+       $data['result'] = $this->common->allstaff($start,$config["per_page"]);
+
+     $data["links"] = getPaginationlink($config["per_page"],$config["total_rows"],$config["base_url"],$config["uri_segment"],1);
+     $data['start'] = $start;
+     if($data)
+     {
+       $output['success'] = "true";
+       $output['result'] = $data;
+     }
+     echo json_encode($output);
+     exit;
+     }
+
+     // staff section
+
 
 
     //************************* forgotPassword********************************

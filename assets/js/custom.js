@@ -74,6 +74,37 @@ $('body').on('click','.customerpagination a',function(e){
  });
 // customer pagination
 
+// staff pagination
+$('body').on('click','.staffpagination a',function(e){
+   e.preventDefault();
+   var pageno = $(this).attr('data-ci-pagination-page');
+
+   if(!pageno)
+   {
+     pageno = 1;
+   }
+   $.ajax({
+   dataType:'json',
+     url :base_url + 'admin/getstaffperpage/'+pageno,
+     type :'post',
+     data : {
+      page:pageno
+     },
+     beforeSend  : function () {
+       $(".loader_panel").css('display','block');
+     },
+     complete: function () {
+       $(".loader_panel").css('display','none');
+     },
+     success: function(response){
+
+     staffrowmanage(response.result);
+
+     }
+   });
+ });
+// staff pagination
+
 
 // search
 jQuery('body').on('click', '.searchbtn', function(){
@@ -727,7 +758,7 @@ $(".articlepagination").html(data.links);
 }
  // article rows
 
- // article rows
+ // customer rows
 function customerrowmanage(data)
   {
     var base_url = $('.base_url').val();
@@ -761,3 +792,37 @@ $(".customerpagination").html(data.links);
 
 }
  // customer rows
+
+ // staff rows
+function staffrowmanage(data)
+  {
+    var base_url = $('.base_url').val();
+
+   var rows = '';
+   var a = data.start + 1;
+
+   if(data.result.length != 0)
+   {
+  $.each( data.result, function( key, value ) {
+
+   rows += '<tr>';
+    rows += '<td>'+a+'</td>';
+    rows += '<td>'+value.name+'</td>';
+    rows += '<td>'+value.email+'</td>';
+    rows += '<td>'+value.phone+'</td>';
+    rows += '<td><a href="'+base_url+'admin/staff/edit/'+value.userId+'"><i class="fa fa-edit"></i></a>&nbsp;&nbsp;<a class="deleterecord" data-link="'+base_url+'admin/staffDelete"  data-id="'+value.userId+'"><i class="fa fa-trash" aria-hidden="true"></i></a></td>';
+    rows += '</tr>';
+   a++;
+});
+}
+else
+{
+   rows += '<tr>';
+   rows += '<td colspan="5">No Record Found</td>';
+   rows += '</tr>';
+}
+$(".staffdata").html(rows);
+$(".staffpagination").html(data.links);
+
+}
+ // staff rows

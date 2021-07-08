@@ -546,6 +546,19 @@ public function getbypaginationslider($tbl,$start,$perPage)
     {
       $this->db->select('*');
       $this->db->from('users');
+      $this->db->where('type',1);
+      $this->db->limit($perPage,$start);
+      $this->db->order_by('userId','desc');
+      $result = $this->db->get();
+      $result = $result->result();
+      return $result;
+    }
+    
+    public function allstaff($start,$perPage)
+    {
+      $this->db->select('*');
+      $this->db->from('users');
+      $this->db->where('type',2);
       $this->db->limit($perPage,$start);
       $this->db->order_by('userId','desc');
       $result = $this->db->get();
