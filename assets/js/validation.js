@@ -224,6 +224,48 @@ submitHandler: function (form)
 });
 
 // company add
+// add staff
+// company
+$("#addstaff").validate({
+rules:
+{
+ name: {
+   required: true,
+ },
+ email: {
+   required: true,
+   email:true,
+   regex: "",
+ },
+ role: {
+   required: true,
+ },
+ phone: {
+   required: true,
+ },
+},
+messages:
+{
+ name: {
+   required: "Please company name",
+ },
+ email: {
+   required: "Please enter email",
+ },
+ role: {
+   required: "Please select role",
+ },
+ phone: {
+   required: "Please enter address",
+ },
+},
+submitHandler: function (form)
+{
+ formSubmit(form);
+}
+});
+
+// add staff
 
 // add variation
  $("#addvariation").validate({

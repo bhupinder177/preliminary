@@ -18,14 +18,30 @@
                                             </li>
                                             <li>
                                                 <div class="content">
-                                                    <p>Companies</p>
-                                                    <span>1234</span>
+                                                    <p>Customer</p>
+                                                    <span><?php echo $customer; ?></span>
                                                 </div>
                                             </li>
                                         </ul>
                                     </div>
                                 </div>
-
+                                <div class="col-md-4">
+                                    <div class="emp wow bounceInDown animated">
+                                        <ul class="ul-list unstyle mb-0">
+                                            <li>
+                                                <div class="bg-blue">
+                                                    <img src="<?php echo base_url(); ?>assets/images/u-em.png" class="image-fluid">
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="content">
+                                                    <p>Staff</p>
+                                                    <span><?php echo $staff; ?></span>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
 
                             </div>
 

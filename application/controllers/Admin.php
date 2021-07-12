@@ -83,7 +83,8 @@ class Admin extends CI_Controller {
   public function dashboard()
   {
     $this->securite();
-    $data['count'] = $this->common->count_all_table("email");
+    $data['customer'] = $this->common->count_all_results("users",array("type"=>1));
+    $data['staff'] = $this->common->count_all_results("users",array("type"=>2));
 
     $this->load->view('admin/header');
     $this->load->view('admin/dashboard',$data);
@@ -359,6 +360,14 @@ class Admin extends CI_Controller {
    {
        $article = $_POST['checked'];
        unset($_POST['checked']);
+       $check = $this->common->getrow('users',array("email"=>$_POST['email']));
+       if(!empty($check))
+       {
+         $output['formErrors'] ="true";
+         $output['errors'] ="Email  is Already Exist.";
+       }
+       else
+       {
 
        $insert = $this->common->insert('users',$_POST);
 
@@ -388,6 +397,7 @@ class Admin extends CI_Controller {
          $output['formErrors'] ="true";
          $output['errors'] ="Customer  is Not Added";
        }
+     }
 
        echo json_encode($output);
        exit;
@@ -416,6 +426,16 @@ class Admin extends CI_Controller {
    {
      $this->securite();
      $data['articles'] = $this->common->get('variation',array("variationStatus"=>1));
+     $selectedId = array();
+     $selected = $this->common->get('user_articles',array("userId"=>$id));
+     if(!empty($selected))
+     {
+       foreach($selected as $s)
+       {
+         $selectedId[]=$s->variationId;
+       }
+     }
+     $data['selectedId'] = $selectedId;
      $data['result'] = $this->common->getrow('users',array("userId"=>$id));
      $this->load->view('admin/header');
      $this->load->view('admin/editcustomer',$data);
@@ -424,8 +444,24 @@ class Admin extends CI_Controller {
 
    public function customerUpdate($id)
    {
+     $article = $_POST['checked'];
+       unset($_POST['checked']);
 
      $update = $this->common->update(array("userId"=>$id),$_POST,'users');
+     if($update)
+     {
+       $this->common->delete('user_articles',array("userId"=>$id));
+       if(!empty($article))
+       {
+         foreach($article as $key=>$a)
+         {
+           $b['userId'] = $id;
+           $b['variationId'] = $key;
+
+           $this->common->insert('user_articles',$b);
+         }
+       }
+     }
 
      if($update)
      {
@@ -530,7 +566,14 @@ class Admin extends CI_Controller {
 
      public function staffSave()
      {
-
+       $check = $this->common->getrow('users',array("email"=>$_POST['email']));
+       if(!empty($check))
+       {
+         $output['formErrors'] ="true";
+         $output['errors'] ="Email  is Already Exist.";
+       }
+       else
+       {
          $insert = $this->common->insert('users',$_POST);
          if($insert)
          {
@@ -545,6 +588,7 @@ class Admin extends CI_Controller {
            $output['formErrors'] ="true";
            $output['errors'] ="Staff  is Not Added";
          }
+       }
 
          echo json_encode($output);
          exit;

@@ -12,7 +12,7 @@
             <div class="box content-box">
               <div class="box-success">
                 <div class="box-body">
-                    <form action="<?php echo base_url(); ?>admin/staffSave" method="post" enctype="multipart/form-data" class="reset" id="addcustomer">
+                    <form action="<?php echo base_url(); ?>admin/staffSave" method="post" enctype="multipart/form-data" class="reset" id="addstaff">
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
@@ -32,6 +32,17 @@
                                     <div class="form-group">
                                       <label>Phone<span class="error">*</span></label>
                                         <input type="text" placeholder="Please enter phone" class="form-control" name="phone"   id="phone">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                      <label>Can edit order<span class="error">*</span></label>
+                                        <select  class="form-control" name="role"   id="role">
+                                          <option value="">Select Option</option>
+                                          <option value="1">Yes</option>
+                                          <option value="2">No</option>
+
+                                        </select>
                                     </div>
                                 </div>
 
